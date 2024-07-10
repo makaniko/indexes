@@ -12,6 +12,9 @@
  */
 package com.indexes.util;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 public class NumberIndexesUtil {
     public static int[][] convert(String[] indexes) {
         if (indexes == null) {
@@ -24,7 +27,7 @@ public class NumberIndexesUtil {
     }
 
     public static int[] convert(String index) {
-        return index.split(',').stream()
+        return Arrays.stream(index.split(','))
             .flatMap(NumberIndexesUtil::convertRange)
             .toArray();
     }
