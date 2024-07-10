@@ -24,6 +24,7 @@ public class NumberIndexesUtil {
         for (int i = 0; i < indexes.length; ++i) {
             numberIndexes[i] = convert(indexes[i]);
         }
+        return numberIndexes;
     }
 
     public static int[] convert(String index) {
