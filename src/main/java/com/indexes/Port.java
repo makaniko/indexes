@@ -13,6 +13,8 @@
 
 package com.indexes;
 
+import com.indexes.util.NumberIndexesUtil;
+
 public class Port {
     private String[] indexes;
     private int[][] numberIndexes;
@@ -22,13 +24,16 @@ public class Port {
     }
 
     public int[][] convertToNumberIndexes() {
+        if (indexes == null) {
+            throw new NullPointerException("String indexes are null, set them first");
+        }
         this.numberIndexes = NumberIndexesUtil.convert(indexes);
         return numberIndexes;
     }
 
     public int[][] getIndexesElementGroups() {
         if (numberIndexes == null) {
-            numberIndexes = convertToNumberIndexes(indexes);
+            numberIndexes = convertToNumberIndexes();
         }
         return NumberIndexesUtil.getElementGroups(numberIndexes);
     }
