@@ -44,7 +44,7 @@ public class NumberIndexesUtil {
         }
     }
 
-    public static int[][] getElementRanges(int[][] indexes) {
+    public static int[][] getElementGroups(int[][] indexes) {
         throw new UnsupportedOperationException("not implemented yet");
     }
 }
