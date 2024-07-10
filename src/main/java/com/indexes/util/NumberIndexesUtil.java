@@ -28,7 +28,7 @@ public class NumberIndexesUtil {
 
     public static int[] convert(String index) {
         return Arrays.stream(index.split(','))
-            .flatMap(NumberIndexesUtil::convertRange)
+            .flatMapToInt(NumberIndexesUtil::convertRange)
             .toArray();
     }
 
