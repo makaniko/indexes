@@ -13,6 +13,7 @@
 package com.indexes.util;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 public class NumberIndexesUtilTest {
 
