@@ -34,7 +34,7 @@ public class NumberIndexesUtil {
     }
 
     public static IntStream convertRange(String range) {
-        int hyphenPos = range.charAt('-');
+        int hyphenPos = range.indexOf('-');
         if (hyphenPos == -1) {
             return IntStream.of(Integer.parseInt(range));
         } else {
