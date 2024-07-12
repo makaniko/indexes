@@ -12,15 +12,21 @@
  */
 package com.indexes.util;
 
+import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class NumberIndexesUtilTest {
 
-    @Test
-    public void testIndexConvert() {
-        String index = "1-5,7,9-11";
-        int[] expectedNumberIndex = new int[]{1, 2, 3, 4, 5, 7, 9, 10, 11};
+    public static Stream<Object[]> indexConvertTestData() {
+        return Stream.of(new Object[]{"1-5,7,9-11", new int[]{1, 2, 3, 4, 5, 7, 9, 10, 11}});
+    }
+
+    @ParameterizedTest
+    @MethodSource("indexConvertTestData")
+    public void testIndexConvert(String index, int[] expectedNumberIndex) {
         int[] actualNumberIndex = NumberIndexesUtil.convert(index);
         Assert.assertArrayEquals(expectedNumberIndex, actualNumberIndex);
     }
