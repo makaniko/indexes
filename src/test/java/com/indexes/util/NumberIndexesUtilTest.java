@@ -13,21 +13,22 @@
 package com.indexes.util;
 
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class NumberIndexesUtilTest {
 
-    public static Stream<Object[]> indexConvertTestData() {
-        return Stream.of(new Object[]{"1-5,7,9-11", new int[]{1, 2, 3, 4, 5, 7, 9, 10, 11}});
+    public static Stream<Arguments> indexConvertTestData() {
+        return Stream.of(Arguments.of("1-5,7,9-11", new int[]{1, 2, 3, 4, 5, 7, 9, 10, 11}));
     }
 
     @ParameterizedTest
     @MethodSource("indexConvertTestData")
     public void testIndexConvert(String index, int[] expectedNumberIndex) {
         int[] actualNumberIndex = NumberIndexesUtil.convert(index);
-        Assert.assertArrayEquals(expectedNumberIndex, actualNumberIndex);
+        Assertions.assertArrayEquals(expectedNumberIndex, actualNumberIndex);
     }
 }
