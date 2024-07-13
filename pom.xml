@@ -6,23 +6,39 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.indexes</groupId>
     <artifactId>indexes-lib</artifactId>
-    <version>0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
     <name>Indexes Java Test Task library</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <junit.version>5.10.3</junit.version>
     </properties>
 
     <dependencies>  
         <dependency>  
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.10.3</version>
+            <scope>test</scope>
+        </dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
