@@ -7,7 +7,7 @@
     <groupId>com.indexes</groupId>
     <artifactId>indexes-lib</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>Indexes Java Test Task library</name>
 
     <properties>
