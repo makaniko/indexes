@@ -46,6 +46,31 @@ public class NumberIndexesUtil {
     }
 
     public static int[][] getElementGroups(int[][] indexes) {
-        throw new UnsupportedOperationException("not implemented yet");
+        int[][] distinctSortedIndexes = Stream.of(indexes)
+            .map(index -> IntStream.of(index).sorted().distinct().toArray())
+            .toArray(len -> new int[len][]);
+        int[] groupElementPos = new int[distinctSortedIndexes.length];
+        ArrayList<int[]> elementGroups = new ArrayList<>();
+        if (Stream.of(distinctSortedIndexes).anyMatch(arr -> arr.length == 0)) {
+            return new int[0][];
+        }
+        for (int i = distinctSortedIndexes.length - 1; i >= 0;) {
+            int[] elementGroup = new int[distinctSortedIndexes.length];
+            for (int j = 0; j < distinctSortedIndexes.length; ++j) {
+                elementGroup[j] = distinctSortedIndexes[j][groupElementPos[j]];
+            }
+            elementGroups.add(elementGroup);
+            while (i >= 0 && groupElementPos[i] + 1 >= distinctSortedIndexes[i].length) {
+                --i;
+            }
+            if (i >= 0) {
+                ++groupElementPos[i];
+                for (int k = i + 1; k < distinctSortedIndexes.length; ++k) {
+                    groupElementPos[k] = 0;
+                }
+                i = distinctSortedIndexes.length - 1;
+            }
+        }
+        return elementGroups.toArray(new int[0][]);
     }
 }
