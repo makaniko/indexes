@@ -12,6 +12,7 @@
  */
 package com.indexes.util;
 
+import java.math.BigInteger;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,7 @@ public class NumberIndexesUtilTest {
                                       Stream.of(new int[]{1, 2, 3, 4, 5}, new int[]{7}, new int[]{9, 10, 11})
                                           .toArray(get2DimIntArrayGenerator())
                                      ));
+    }
 
     @ParameterizedTest
     @MethodSource("indexConvertSmallNumbersData")
