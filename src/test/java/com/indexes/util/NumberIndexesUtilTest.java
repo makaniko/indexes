@@ -13,6 +13,7 @@
 package com.indexes.util;
 
 import java.math.BigInteger;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
