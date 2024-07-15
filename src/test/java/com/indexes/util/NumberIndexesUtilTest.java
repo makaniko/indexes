@@ -77,7 +77,7 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexConvertIncorrectData")
     public void testBigIntIndexConvert(String index) {
-        Assertions.assertThrows(IllegalArgumentsException.class, () -> NumberIndexesUtil.convert(index));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> NumberIndexesUtil.convert(index));
     }
 
     @ParameterizedTest
@@ -93,8 +93,8 @@ public class NumberIndexesUtilTest {
     }
 
     public BigInteger[] convert(int[] arr) {
-        return Stream.of(arr)
-            .map(BigInteger::valueOf)
+        return Arrays.stream(arr)
+            .mapToObj(BigInteger::valueOf)
             .toArray(len -> new BigInteger[len]);
     }
 }
