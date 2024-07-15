@@ -36,18 +36,18 @@ public class NumberIndexesUtilTest {
 
     public static Stream<Arguments> indexConvertBigNumbersData() {
         return Stream.of(Arguments.of("1000000000000000000000000000",
-                                      new BigInteger[]{new BigInteger("1000000000000000000000000000", 10)}),
+                                      new BigInteger[]{new BigInteger("1000000000000000000000000000")}),
                          Arguments.of("1000000000000000000000000000-1000000000000000000000000001",
-                                      new BigInteger[]{new BigInteger("1000000000000000000000000000", 10),
-                                                       new BigInteger("1000000000000000000000000001", 10)}),
+                                      new BigInteger[]{new BigInteger("1000000000000000000000000000"),
+                                                       new BigInteger("1000000000000000000000000001")}),
                          Arguments.of("1000000000000000000000000000,999999999999999999999999999",
-                                      new BigInteger[]{new BigInteger("1000000000000000000000000000", 10),
-                                                       new BigInteger("999999999999999999999999999", 10)}));
+                                      new BigInteger[]{new BigInteger("1000000000000000000000000000"),
+                                                       new BigInteger("999999999999999999999999999")}));
     }
 
     public static Stream<String> indexConvertIncorrectData() {
         return Stream.of("0.0", "0;0", "0:0", "0-A",
-                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0", "0, 1");
+                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0", "0, 1", "-2--1");
     }
 
     public static Stream<Arguments> indexesConvertData() {
@@ -84,8 +84,8 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexesConvertData")
     public void testIndexesConvert(String[] indexes, int[][] expectedNumberIndexes) {
-        BigInteger[][] expectedNumberIndexes = Arrays.stream(expectedNumberIndexes)
-            .mapToObj(this::changeTypeToBigInt)
+        BigInteger[][] expectedBigIntNumberIndexes = Arrays.stream(expectedNumberIndexes)
+            .map(this::changeTypeToBigInt)
             .toArray(len -> new BigInteger[len][]);
         BigInteger[][] actualNumberIndexes = NumberIndexesUtil.convert(indexes);
         Assertions.assertArrayEquals(expectedNumberIndexes, actualNumberIndexes);
