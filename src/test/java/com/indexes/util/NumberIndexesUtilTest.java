@@ -13,6 +13,7 @@
 package com.indexes.util;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
@@ -63,7 +64,7 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexConvertSmallNumbersData")
     public void testIndexConvert(String index, int[] expectedNumberIndex) {
-        BigInteger[] expectedBigIntNumberIndex = convert(expectedNumberIndex);
+        BigInteger[] expectedBigIntNumberIndex = changeTypeToBigInt(expectedNumberIndex);
         testBigIntIndexConvert(index, expectedBigIntNumberIndex);
     }
 
@@ -83,7 +84,9 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexesConvertData")
     public void testIndexesConvert(String[] indexes, int[][] expectedNumberIndexes) {
-        BigInteger[][] expectedNumberIndexes = convert(expectedNumberIndexes);
+        BigInteger[][] expectedNumberIndexes = Arrays.stream(expectedNumberIndexes)
+            .mapToObj(this::changeTypeToBigInt)
+            .toArray(len -> new BigInteger[len][]);
         BigInteger[][] actualNumberIndexes = NumberIndexesUtil.convert(indexes);
         Assertions.assertArrayEquals(expectedNumberIndexes, actualNumberIndexes);
     }
@@ -92,7 +95,7 @@ public class NumberIndexesUtilTest {
         return len -> new int[len][];
     }
 
-    public BigInteger[] convert(int[] arr) {
+    public BigInteger[] changeTypeToBigInt(int[] arr) {
         return Arrays.stream(arr)
             .mapToObj(BigInteger::valueOf)
             .toArray(len -> new BigInteger[len]);
