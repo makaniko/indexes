@@ -36,14 +36,14 @@ public class NumberIndexesUtil {
         }
         return Arrays.stream(index.split(","))
             .flatMap(NumberIndexesUtil::convertRange)
-            .toArray();
+            .toArray(getBigIntArrayGenerator());
     }
 
     public static Stream<BigInteger> convertRange(String range) {
         int hyphenPos = range.indexOf('-');
         if (hyphenPos == -1) {
             try {
-                int parsedNumber = new BigInteger(range);
+                BigInteger parsedNumber = new BigInteger(range);
                 return Stream.of(parsedNumber);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e);
@@ -62,12 +62,12 @@ public class NumberIndexesUtil {
     public static BigInteger[][] getElementGroups(BigInteger[][] indexes) {
         BigInteger[][] distinctSortedIndexes = Arrays.stream(indexes)
             .map(index -> Arrays.stream(index).sorted().distinct()
-                 .toArray(len -> new BigInteger[len]))
+                 .toArray(getBigIntArrayGenerator()))
             .toArray(len -> new BigInteger[len][]);
         int[] groupElementPos = new int[distinctSortedIndexes.length];
         ArrayList<BigInteger[]> elementGroups = new ArrayList<>();
         if (Stream.of(distinctSortedIndexes).anyMatch(arr -> arr.length == 0)) {
-            return new int[0][];
+            return new BigInteger[0][];
         }
         for (int i = distinctSortedIndexes.length - 1; i >= 0;) {
             BigInteger[] elementGroup = new BigInteger[distinctSortedIndexes.length];
@@ -87,5 +87,9 @@ public class NumberIndexesUtil {
             }
         }
         return elementGroups.toArray(new BigInteger[0][]);
+    }
+
+    public IntFunction<BigInteger[]> getBigIntArrayGenerator() {
+        return len -> new BigInteger[len];
     }
 }
