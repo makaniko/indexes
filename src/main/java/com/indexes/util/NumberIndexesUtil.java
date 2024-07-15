@@ -15,6 +15,7 @@ package com.indexes.util;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -89,7 +90,7 @@ public class NumberIndexesUtil {
         return elementGroups.toArray(new BigInteger[0][]);
     }
 
-    public IntFunction<BigInteger[]> getBigIntArrayGenerator() {
+    public static IntFunction<BigInteger[]> getBigIntArrayGenerator() {
         return len -> new BigInteger[len];
     }
 }
