@@ -30,6 +30,9 @@ public class NumberIndexesUtil {
     }
 
     public static int[] convert(String index) {
+        if (index.length() == 0) {
+            return new int[]{};
+        }
         return Arrays.stream(index.split(","))
             .flatMapToInt(NumberIndexesUtil::convertRange)
             .toArray();
@@ -38,7 +41,12 @@ public class NumberIndexesUtil {
     public static IntStream convertRange(String range) {
         int hyphenPos = range.indexOf('-');
         if (hyphenPos == -1) {
-            return IntStream.of(Integer.parseInt(range));
+            try {
+                int parsedNumber = Integer.parseInt(range);
+                return IntStream.of(parsedNumber);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(e);
+            }
         } else {
             int rangeFirstNumber = Integer.parseInt(range.substring(0, hyphenPos));
             int rangeLastNumber = Integer.parseInt(range.substring(hyphenPos + 1));
