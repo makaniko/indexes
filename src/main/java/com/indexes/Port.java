@@ -13,17 +13,18 @@
 
 package com.indexes;
 
+import java.math.BigInteger;
 import com.indexes.util.NumberIndexesUtil;
 
 public class Port {
     private String[] indexes;
-    private int[][] numberIndexes;
+    private BigInteger[][] numberIndexes;
 
     public void setIndexes(String[] indexes) {
         this.indexes = indexes;
     }
 
-    public int[][] convertToNumberIndexes() {
+    public BigInteger[][] convertToNumberIndexes() {
         if (indexes == null) {
             throw new NullPointerException("String indexes are null, set them first");
         }
@@ -31,7 +32,7 @@ public class Port {
         return numberIndexes;
     }
 
-    public int[][] getIndexesElementGroups() {
+    public BigInteger[][] getIndexesElementGroups() {
         if (numberIndexes == null) {
             numberIndexes = convertToNumberIndexes();
         }
