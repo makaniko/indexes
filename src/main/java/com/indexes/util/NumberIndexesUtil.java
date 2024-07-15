@@ -51,7 +51,7 @@ public class NumberIndexesUtil {
             BigInteger rangeFirstNumber = new BigInteger(range.substring(0, hyphenPos));
             BigInteger rangeLastNumber = new BigInteger(range.substring(hyphenPos + 1));
             ArrayList<BigInteger> numbers = new ArrayList<>();
-            for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE) {
+            for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE)) {
                 numbers.add(i);
             }
             return numbers.stream();
