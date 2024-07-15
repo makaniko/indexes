@@ -12,6 +12,7 @@
  */
 package com.indexes.util;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
