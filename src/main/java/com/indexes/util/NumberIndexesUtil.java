@@ -18,54 +18,58 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class NumberIndexesUtil {
-    public static int[][] convert(String[] indexes) {
+    public static BigInteger[][] convert(String[] indexes) {
         if (indexes == null) {
             throw new NullPointerException("String indexes are null");
         }
-        int[][] numberIndexes = new int[indexes.length][];
+        BigInteger[][] numberIndexes = new BigInteger[indexes.length][];
         for (int i = 0; i < indexes.length; ++i) {
             numberIndexes[i] = convert(indexes[i]);
         }
         return numberIndexes;
     }
 
-    public static int[] convert(String index) {
+    public static BigInteger[] convert(String index) {
         if (index.length() == 0) {
-            return new int[]{};
+            return new BigInteger[]{};
         }
         return Arrays.stream(index.split(","))
-            .flatMapToInt(NumberIndexesUtil::convertRange)
+            .flatMap(NumberIndexesUtil::convertRange)
             .toArray();
     }
 
-    public static IntStream convertRange(String range) {
+    public static Stream<BigInteger> convertRange(String range) {
         int hyphenPos = range.indexOf('-');
         if (hyphenPos == -1) {
             try {
-                int parsedNumber = Integer.parseInt(range);
-                return IntStream.of(parsedNumber);
+                int parsedNumber = new BigInteger(range);
+                return Stream.of(parsedNumber);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException(e);
             }
         } else {
-            int rangeFirstNumber = Integer.parseInt(range.substring(0, hyphenPos));
-            int rangeLastNumber = Integer.parseInt(range.substring(hyphenPos + 1));
-            return IntStream.iterate(rangeFirstNumber, n -> n+ 1)
-                .limit(rangeLastNumber - rangeFirstNumber + 1);
+            BigInteger rangeFirstNumber = new BigInteger(range.substring(0, hyphenPos));
+            BigInteger rangeLastNumber = new BigInteger(range.substring(hyphenPos + 1));
+            ArrayList<BigInteger> numbers = new ArrayList<>();
+            for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE) {
+                numbers.add(i);
+            }
+            return numbers.stream();
         }
     }
 
-    public static int[][] getElementGroups(int[][] indexes) {
-        int[][] distinctSortedIndexes = Stream.of(indexes)
-            .map(index -> IntStream.of(index).sorted().distinct().toArray())
-            .toArray(len -> new int[len][]);
+    public static BigInteger[][] getElementGroups(BigInteger[][] indexes) {
+        BigInteger[][] distinctSortedIndexes = Arrays.stream(indexes)
+            .map(index -> Arrays.stream(index).sorted().distinct()
+                 .toArray(len -> new BigInteger[len]))
+            .toArray(len -> new BigInteger[len][]);
         int[] groupElementPos = new int[distinctSortedIndexes.length];
-        ArrayList<int[]> elementGroups = new ArrayList<>();
+        ArrayList<BigInteger[]> elementGroups = new ArrayList<>();
         if (Stream.of(distinctSortedIndexes).anyMatch(arr -> arr.length == 0)) {
             return new int[0][];
         }
         for (int i = distinctSortedIndexes.length - 1; i >= 0;) {
-            int[] elementGroup = new int[distinctSortedIndexes.length];
+            BigInteger[] elementGroup = new BigInteger[distinctSortedIndexes.length];
             for (int j = 0; j < distinctSortedIndexes.length; ++j) {
                 elementGroup[j] = distinctSortedIndexes[j][groupElementPos[j]];
             }
@@ -81,6 +85,6 @@ public class NumberIndexesUtil {
                 i = distinctSortedIndexes.length - 1;
             }
         }
-        return elementGroups.toArray(new int[0][]);
+        return elementGroups.toArray(new BigInteger[0][]);
     }
 }
