@@ -46,24 +46,55 @@ public class NumberIndexesUtilTest {
 
     public static Stream<String> indexConvertIncorrectData() {
         return Stream.of("0.0", "0;0", "0:0", "0-A",
-                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0");
+                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0", "0, 1");
     }
 
-    public static Stream<Arguments> indexesConvertSmallNumbersData() {
-        return Stream.of(Arguments.of(new String[]{"1-5","7","9-11"},
-                                      Stream.of(new int[]{1, 2, 3, 4, 5}, new int[]{7}, new int[]{9, 10, 11})
-                                          .toArray(get2DimIntArrayGenerator())
-                                     ));
+    public static Stream<Arguments> indexesConvertData() {
+        return Stream.of(Arguments.of(new String[]{"1-5", "7", "9-11"},
+                                      Stream.of(new int[]{1, 2, 3, 4, 5}, new int[]{7},
+                                                new int[]{9, 10, 11})
+                                          .toArray(get2DimIntArrayGenerator())),
+                         Arguments.of(new String[]{"0-1,2", "0,1,2", "0,1-2", "0-2"},
+                                      Stream.of(new int[]{0, 1, 2}, new int[]{0, 1, 2},
+                                                new int[]{0, 1, 2}, new int[]{0, 1, 2})
+                                          .toArray(get2DimIntArrayGenerator())));
     }
 
     @ParameterizedTest
     @MethodSource("indexConvertSmallNumbersData")
     public void testIndexConvert(String index, int[] expectedNumberIndex) {
-        int[] actualNumberIndex = NumberIndexesUtil.convert(index);
-        Assertions.assertArrayEquals(expectedNumberIndex, actualNumberIndex);
+        BigInteger[] expectedBigIntNumberIndex = convert(expectedNumberIndex);
+        testBigIntIndexConvert(index, expectedBigIntNumberIndex);
+    }
+
+    @ParameterizedTest
+    @MethodSource("indexConvertBigNumbersData")
+    public void testBigIntIndexConvert(String index, BigInteger[] expectedBigIntNumberIndex) {
+        BigInteger[] actualNumberIndex = NumberIndexesUtil.convert(index);
+        Assertions.assertArrayEquals(expectedBigIntNumberIndex, actualNumberIndex);
+    }
+
+    @ParameterizedTest
+    @MethodSource("indexConvertIncorrectData")
+    public void testBigIntIndexConvert(String index) {
+        Assertions.assertThrows(IllegalArgumentsException.class, () -> NumberIndexesUtil.convert(index));
+    }
+
+    @ParameterizedTest
+    @MethodSource("indexesConvertData")
+    public void testIndexesConvert(String[] indexes, int[][] expectedNumberIndexes) {
+        BigInteger[][] expectedNumberIndexes = convert(expectedNumberIndexes);
+        BigInteger[][] actualNumberIndexes = NumberIndexesUtil.convert(indexes);
+        Assertions.assertArrayEquals(expectedNumberIndexes, actualNumberIndexes);
     }
 
     public static IntFunction<int[][]> get2DimIntArrayGenerator() {
         return len -> new int[len][];
+    }
+
+    public BigInteger[] convert(int[] arr) {
+        return Stream.of(arr)
+            .map(BigInteger::valueOf)
+            .toArray(len -> new BigInteger[len]);
     }
 }
