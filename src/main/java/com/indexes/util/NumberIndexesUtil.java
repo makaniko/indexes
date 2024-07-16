@@ -42,7 +42,7 @@ public class NumberIndexesUtil {
 
     public static Stream<BigInteger> convertRange(String range) {
         try {
-            if (index.length() == 0) {
+            if (range.length() == 0) {
                 throw new IllegalArgumentException("Number sequence is empty");
             }
             int hyphenPos = range.indexOf('-');
