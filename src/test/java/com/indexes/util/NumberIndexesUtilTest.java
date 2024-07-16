@@ -88,10 +88,11 @@ public class NumberIndexesUtilTest {
             .map(this::changeTypeToBigInt)
             .toArray(len -> new BigInteger[len][]);
         BigInteger[][] actualNumberIndexes = NumberIndexesUtil.convert(indexes);
-        Assertions.assertEquals(expectedNumberIndexes.length, actualNumberIndexes.length);
-        for (int i = 0; i < actualNumberIndexes.length; ++i) {
-            Assertions.assertArrayEquals(expectedNumberIndexes[i], actualNumberIndexes[i]);
-        }
+        Assertions.assertArrayEquals(expectedBigIntNumberIndexes, actualNumberIndexes);
+//        Assertions.assertEquals(expectedNumberIndexes.length, actualNumberIndexes.length);
+//        for (int i = 0; i < actualNumberIndexes.length; ++i) {
+//            Assertions.assertArrayEquals(expectedNumberIndexes[i], actualNumberIndexes[i]);
+//        }
     }
 
     public static IntFunction<int[][]> get2DimIntArrayGenerator() {
