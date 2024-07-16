@@ -77,7 +77,7 @@ public class NumberIndexesUtilTest {
 
     @ParameterizedTest
     @MethodSource("indexConvertIncorrectData")
-    public void testBigIntIndexConvert(String index) {
+    public void testIndexConvertIncorrectData(String index) {
         Assertions.assertThrows(IllegalArgumentException.class, () -> NumberIndexesUtil.convert(index));
     }
 
