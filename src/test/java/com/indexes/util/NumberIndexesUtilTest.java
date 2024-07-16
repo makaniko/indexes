@@ -31,7 +31,8 @@ public class NumberIndexesUtilTest {
                          Arguments.of("0-9", new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}),
                          Arguments.of("0-0", new int[]{0}),
                          Arguments.of("1-0", new int[]{}),
-                         Arguments.of("1,2,3,4,5", new int[]{1, 2, 3, 4, 5}));
+                         Arguments.of("0-2,0-2,0-2,0-2",
+                                      new int[]{0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2}));
     }
 
     public static Stream<Arguments> indexConvertBigNumbersData() {
@@ -78,7 +79,8 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexConvertIncorrectData")
     public void testIndexConvertIncorrectData(String index) {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> NumberIndexesUtil.convert(index));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                                () -> NumberIndexesUtil.convert(index));
     }
 
     @ParameterizedTest
