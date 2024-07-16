@@ -41,22 +41,25 @@ public class NumberIndexesUtil {
     }
 
     public static Stream<BigInteger> convertRange(String range) {
-        int hyphenPos = range.indexOf('-');
-        if (hyphenPos == -1) {
-            try {
+        try {
+            if (index.length() == 0) {
+                throw new IllegalArgumentException("Number sequence is empty");
+            }
+            int hyphenPos = range.indexOf('-');
+            if (hyphenPos == -1) {
                 BigInteger parsedNumber = new BigInteger(range);
                 return Stream.of(parsedNumber);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException(e);
+            } else {
+                BigInteger rangeFirstNumber = new BigInteger(range.substring(0, hyphenPos));
+                BigInteger rangeLastNumber = new BigInteger(range.substring(hyphenPos + 1));
+                ArrayList<BigInteger> numbers = new ArrayList<>();
+                for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE)) {
+                    numbers.add(i);
+                }
+                return numbers.stream();
             }
-        } else {
-            BigInteger rangeFirstNumber = new BigInteger(range.substring(0, hyphenPos));
-            BigInteger rangeLastNumber = new BigInteger(range.substring(hyphenPos + 1));
-            ArrayList<BigInteger> numbers = new ArrayList<>();
-            for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE)) {
-                numbers.add(i);
-            }
-            return numbers.stream();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
