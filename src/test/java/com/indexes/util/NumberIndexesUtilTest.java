@@ -47,8 +47,9 @@ public class NumberIndexesUtilTest {
     }
 
     public static Stream<String> indexConvertIncorrectData() {
-        return Stream.of("0.0", "0;0", "0:0", "0-A",
-                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0", "0, 1", "-2--1");
+        return Stream.of("0.0", "0;0", "0:0", "0-A", "0, 1",
+                         ",", "0,", ",0", "0-", "-0", "0,,0", "0--0", "0-0-0", "-2--1", "-1-0",
+                         "1000000000-10000000001");
     }
 
     public static Stream<Arguments> indexesConvertData() {
@@ -59,6 +60,29 @@ public class NumberIndexesUtilTest {
                          Arguments.of(new String[]{"0-1,2", "0,1,2", "0,1-2", "0-2"},
                                       Stream.of(new int[]{0, 1, 2}, new int[]{0, 1, 2},
                                                 new int[]{0, 1, 2}, new int[]{0, 1, 2})
+                                          .toArray(get2DimIntArrayGenerator())));
+    }
+    
+    public static Stream<Arguments> elementGroupsData() {
+        return Stream.of(Arguments.of(Stream.of(new int[]{1, 3, 4, 5}, new int[]{2},
+                                                new int[]{3, 4})
+                                          .toArray(get2DimIntArrayGenerator()),
+                                      Stream.of(new int[]{1, 2, 3}, new int[]{1, 2, 4},
+                                                new int[]{3, 2, 3}, new int[]{3, 2, 4},
+                                                new int[]{4, 2, 3}, new int[]{4, 2, 4},
+                                                new int[]{5, 2, 3}, new int[]{5, 2, 4})
+                                          .toArray(get2DimIntArrayGenerator())),
+                         Arguments.of(Stream.of(new int[]{4, 2, 1, 2, 0}, new int[]{0, 0, 1, 1},
+                                                new int[]{1, 0})
+                                          .toArray(get2DimIntArrayGenerator()),
+                                      Stream.of(new int[]{0, 0, 0}, new int[]{0, 0, 1},
+                                                new int[]{0, 1, 0}, new int[]{0, 1, 1},
+                                                new int[]{1, 0, 0}, new int[]{1, 0, 1},
+                                                new int[]{1, 1, 0}, new int[]{1, 1, 1},
+                                                new int[]{2, 0, 0}, new int[]{2, 0, 1},
+                                                new int[]{2, 1, 0}, new int[]{2, 1, 1},
+                                                new int[]{4, 0, 0}, new int[]{4, 0, 1},
+                                                new int[]{4, 1, 0}, new int[]{4, 1, 1})
                                           .toArray(get2DimIntArrayGenerator())));
     }
 
@@ -86,19 +110,33 @@ public class NumberIndexesUtilTest {
     @ParameterizedTest
     @MethodSource("indexesConvertData")
     public void testIndexesConvert(String[] indexes, int[][] expectedNumberIndexes) {
-        BigInteger[][] expectedBigIntNumberIndexes = Arrays.stream(expectedNumberIndexes)
-            .map(this::changeTypeToBigInt)
-            .toArray(len -> new BigInteger[len][]);
+        BigInteger[][] expectedBigIntNumberIndexes = changeTypeToBigInt(expectedNumberIndexes);
         BigInteger[][] actualNumberIndexes = NumberIndexesUtil.convert(indexes);
         Assertions.assertArrayEquals(expectedBigIntNumberIndexes, actualNumberIndexes);
-//        Assertions.assertEquals(expectedNumberIndexes.length, actualNumberIndexes.length);
-//        for (int i = 0; i < actualNumberIndexes.length; ++i) {
-//            Assertions.assertArrayEquals(expectedNumberIndexes[i], actualNumberIndexes[i]);
-//        }
+    }
+
+    @Test
+    public void testEmptyIndexesConvert() {
+        Assertions.assertThrows(NullPointerException.class, () -> NumberIndexesUtil.convert(null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("elementGroupsData")
+    public void testElementGroups(int[][] indexes, int[][] expectedElementGroups) {
+        BigInteger[][] bigIntNumberIndexes = changeTypeToBigInt(indexes);
+        BigInteger[][] expectedBigIntElementGroups = changeTypeToBigInt(expectedElementGroups);
+        BigInteger[][] actualElementGroups = NumberIndexesUtil.getElementGroups(indexes);
+        Assertions.assertArrayEquals(expectedBigIntElementGroups, actualElementGroups);
     }
 
     public static IntFunction<int[][]> get2DimIntArrayGenerator() {
         return len -> new int[len][];
+    }
+
+    public BigInteger[][] changeTypeToBigInt(int[][] arr) {
+        return Arrays.stream(arr)
+            .map(this::changeTypeToBigInt)
+            .toArray(len -> new BigInteger[len][]);
     }
 
     public BigInteger[] changeTypeToBigInt(int[] arr) {
