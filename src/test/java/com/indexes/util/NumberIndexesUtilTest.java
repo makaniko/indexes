@@ -117,7 +117,8 @@ public class NumberIndexesUtilTest {
 
     @Test
     public void testEmptyIndexesConvert() {
-        Assertions.assertThrows(NullPointerException.class, () -> NumberIndexesUtil.convert(null));
+        String[] nullIndexes = null;
+        Assertions.assertThrows(NullPointerException.class, () -> NumberIndexesUtil.convert(nullIndexes));
     }
 
     @ParameterizedTest
@@ -125,7 +126,7 @@ public class NumberIndexesUtilTest {
     public void testElementGroups(int[][] indexes, int[][] expectedElementGroups) {
         BigInteger[][] bigIntNumberIndexes = changeTypeToBigInt(indexes);
         BigInteger[][] expectedBigIntElementGroups = changeTypeToBigInt(expectedElementGroups);
-        BigInteger[][] actualElementGroups = NumberIndexesUtil.getElementGroups(indexes);
+        BigInteger[][] actualElementGroups = NumberIndexesUtil.getElementGroups(bigIntNumberIndexes);
         Assertions.assertArrayEquals(expectedBigIntElementGroups, actualElementGroups);
     }
 
