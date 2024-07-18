@@ -35,7 +35,7 @@ public class NumberIndexesUtil {
         if (index.length() == 0) {
             return new BigInteger[]{};
         }
-        return Arrays.stream(index.split(","))
+        return Arrays.stream(index.split(",", -1))
             .flatMap(NumberIndexesUtil::convertRange)
             .toArray(getBigIntArrayGenerator());
     }
