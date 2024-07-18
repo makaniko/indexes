@@ -20,6 +20,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class NumberIndexesUtil {
+    public static final int MAX_RANGE_SIZE = Integer.MAX_VALUE;
+    
     public static BigInteger[][] convert(String[] indexes) {
         if (indexes == null) {
             throw new NullPointerException("String indexes are null");
@@ -50,8 +52,18 @@ public class NumberIndexesUtil {
                 BigInteger parsedNumber = new BigInteger(range);
                 return Stream.of(parsedNumber);
             } else {
+                if (range.indexOf('-', hyphenPos + 1) != -1) {
+                    throw new IllegalArgumentException(
+                        "Multiple hyphens in one number sequence: "
+                        + "\"" + range + "\"");
+                }
                 BigInteger rangeFirstNumber = new BigInteger(range.substring(0, hyphenPos));
                 BigInteger rangeLastNumber = new BigInteger(range.substring(hyphenPos + 1));
+                if ((rangeLastNumber.subtract(rangeFirstNumber)).compareTo(
+                    BigInteger.valueOf(MAX_RANGE_SIZE)) == 1) {
+                    throw new IllegalArgumentException("Number sequence size is too big: "
+                                                       + "\"" + range + "\"");
+                }
                 ArrayList<BigInteger> numbers = new ArrayList<>();
                 for (BigInteger i = rangeFirstNumber; i.compareTo(rangeLastNumber) != 1; i = i.add(BigInteger.ONE)) {
                     numbers.add(i);
