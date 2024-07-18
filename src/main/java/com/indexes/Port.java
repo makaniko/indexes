@@ -22,6 +22,7 @@ public class Port {
 
     public void setIndexes(String[] indexes) {
         this.indexes = indexes;
+        this.numberIndexes = null;
     }
 
     public BigInteger[][] convertToNumberIndexes() {
