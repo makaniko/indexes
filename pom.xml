@@ -80,7 +80,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        com.baeldung.executable.ExecutableMavenJar
+                                        com.indexes.App
                                     </mainClass>
                                 </manifest>
                             </archive>
